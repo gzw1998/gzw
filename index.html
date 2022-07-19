@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <script src='./vue.js'></script>
+    <link rel="stylesheet" href="app.css">
+    <!-- 引入jsList -->
+    <script src="./questions/jsList.js"></script>
+    <!-- 引入cssList -->
+    <script src="./questions/cssList.js"></script>
+    <!-- 引入vueList -->
+    <script src="./questions/vueList.js"></script>
+    <!-- 混入mixin -->
+    <script src="./mixin/mixin.js"></script>
+    <title>面试宝典</title>
+
+</head>
+
+<body>
+    <div id='app'>
+        <div class="header">面试宝典</div>
+        <div class="myinput">
+            <div class="search">
+                面试题关键字:
+                <input type="text" v-model="keywords" placeholder="请输入面试题关键字">
+                <img @click="showHelp" src="./imgs/help.png">
+            </div>
+            <div class="tabs">
+                <button @click="change(index)" class="default" :class="{select:selectindex==index}"
+                    v-for="(item,index) in tabsList">
+                    {{item}}
+                </button>
+            </div>
+        </div>
+        <div class="content">
+            <div v-for="item in search()">
+                <h3 class="question">{{item.question}}</h3>
+                <div class="answer" v-html="item.answer"></div>
+            </div>
+        </div>
+
+    </div>
+    <script type="module">
+        Vue.config.productionTip = false;
+        var vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    /* 当前选中面试题类型 */
+                    selectindex: 0,
+                    keywords: '',
+                    /* 面试题数据列表 */
+                    list: [...jsList, ...cssList, ...vueList],
+                    tabsList: ['全部', 'javascript', 'css', 'vue']
+                }
+            },
+            mixins: [mixin]
+        })
+    </script>
+</body>
+</html>
